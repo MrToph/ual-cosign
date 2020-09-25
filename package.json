@@ -1,0 +1,36 @@
+{
+  "name": "ual-cosign",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Christoph Michel"
+  },
+  "contributors": [
+    "Christoph Michel"
+  ],
+  "scripts": {
+    "build": "tsc --build tsconfig.json",
+    "clean-build": "rm -rf dist && npm run build",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "prepublish": "npm run clean-build",
+    "test": "jest"
+  },
+  "dependencies": {
+    "eosjs": "^21.0.3",
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.2.0",
+    "@blockone/tslint-config-blockone": "^3.0.0",
+    "@types/elliptic": "^6.4.10",
+    "@types/node": "^12.12.20",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.2",
+    "universal-authenticator-library": "^0.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MrToph/ual-cosign"
+  }
+}
