@@ -1,5 +1,5 @@
 {
-  "name": "ual-cosign",
+  "name": "@cmichel/ual-cosign",
   "version": "0.1.0",
   "main": "dist/index.js",
   "license": "MIT",

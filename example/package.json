@@ -17,7 +17,7 @@
     "ual-anchor": "^0.5.1",
     "ual-reactjs-renderer": "^0.3.1",
     "ual-scatter": "^0.3.0",
-    "ual-cosign": "file://.."
+    "@cmichel/ual-cosign": "file://.."
   },
   "scripts": {
     "start": "react-scripts start",

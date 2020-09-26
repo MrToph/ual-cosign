@@ -66,15 +66,23 @@ const wrapUAL = (ual: UAL) => {
 type TEnhanceUAL<T> = T & TWrappedUAL;
 
 export const enhanceUAL = <T extends UAL>(ual: T): TEnhanceUAL<T> => {
+  const wrappedUAL = wrapUAL(ual);
   return new Proxy(ual, {
     get(target, prop) {
-      if (!(prop in target)) {
-        const wrappedUAL = wrapUAL(target);
-        if (prop in wrappedUAL) {
-          return wrappedUAL[prop];
-        }
+      if (prop in wrappedUAL) {
+        return wrappedUAL[prop];
       }
       return target[prop];
+    },
+    // needed to make it work with mobx observable and other libraries that iterate over all keys
+    ownKeys(target) {
+      return [...new Set(Object.keys(target).concat(Object.keys(wrappedUAL)))];
+    },
+    getOwnPropertyDescriptor(target, prop) {
+      return (
+        Object.getOwnPropertyDescriptor(wrappedUAL, prop) ||
+        Object.getOwnPropertyDescriptor(target, prop)
+      );
     },
   }) as any;
 };

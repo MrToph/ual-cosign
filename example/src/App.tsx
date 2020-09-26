@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Scatter } from "ual-scatter";
 import { Anchor } from "ual-anchor";
 import { UALProvider, withUAL, UALProps } from "ual-reactjs-renderer";
-import { enhanceUAL } from "ual-cosign";
+import { enhanceUAL } from "@cmichel/ual-cosign";
 
 const styles = {
   container: {
