@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Scatter } from "ual-scatter";
+import { Scatter } from "ual-scatter-protocol";
 import { Anchor } from "ual-anchor";
 import { UALProvider, withUAL, UALProps } from "ual-reactjs-renderer";
 import { enhanceUAL } from "@cmichel/ual-cosign";
@@ -44,6 +44,13 @@ const styles = {
   },
 } as any;
 
+const formatErrorMessage = (ualError) => {
+  const originalMsg = (
+    (ualError as any)?.cause?.json?.error?.details[0] || ualError
+  ).message;
+  return originalMsg
+};
+
 const receiver = `not.exists`;
 const getTransaction = (account: string) => ({
   actions: [
@@ -60,37 +67,39 @@ class TestApp extends Component<UALProps> {
   state = { message: "" };
 
   transfer = async () => {
-    const {
-      ual: { activeUser },
-    } = this.props;
+    const { ual } = this.props;
     try {
-      const accountName = await activeUser.getAccountName();
+      this.setState({ message: `` });
+      const accountName = await ual.activeUser.getAccountName();
       const demoTransaction = getTransaction(accountName);
-      const result = await activeUser.signTransaction(demoTransaction, {
+      const enhancedUAL = enhanceUAL(ual, {
+        cosignEndpoint: `http://localhost:3000/cosign`,
+      });
+      const result = await enhancedUAL.cosignTransaction(demoTransaction, {
         expireSeconds: 60,
         blocksBehind: 3,
       });
-      this.setState({ message: `Transfer Successful!` }, () => {
-        setTimeout(this.resetMessage, 5000);
-      });
+      this.setState({ message: `Transfer Successful!` });
       console.info("SUCCESS:", result);
     } catch (e) {
-      console.error("ERROR:", e);
+      const errorMsg = formatErrorMessage(e);
+      console.error(errorMsg, e);
+      this.setState({ message: errorMsg });
     }
   };
 
   changeRpc = async () => {
     const { ual } = this.props;
-    console.log(ual)
-    const enhancedUAL = enhanceUAL(ual)
-    console.log(enhancedUAL)
-    enhancedUAL.changeRpcEndpoint(`https://api.main.alohaeos.com`)
-  }
+    const enhancedUAL = enhanceUAL(ual, {
+      cosignEndpoint: `http://localhost:3000/cosign`,
+    });
+    enhancedUAL.changeRpcEndpoint(`https://api.main.alohaeos.com`);
+  };
 
   getName = () => {
     const { ual } = this.props;
     return ual.activeUser ? ual.activeUser.accountName : ``;
-  }
+  };
 
   resetMessage = () => this.setState({ message: "" });
 
@@ -116,10 +125,7 @@ class TestApp extends Component<UALProps> {
       >
         <p>Logout</p>
       </button>
-      <button
-        type="button"
-        onClick={this.changeRpc}
-      >
+      <button type="button" onClick={this.changeRpc}>
         <p>Change RPC</p>
       </button>
     </>

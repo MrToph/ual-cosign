@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@cmichel/ual-cosign": "file://..",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -17,7 +18,7 @@
     "ual-anchor": "^0.5.1",
     "ual-reactjs-renderer": "^0.3.1",
     "ual-scatter": "^0.3.0",
-    "@cmichel/ual-cosign": "file://.."
+    "ual-scatter-protocol": "^0.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
