@@ -6,5 +6,5 @@ export type TEosioAction<T = any> = {
 };
 
 export type TEosioTransaction<T = any> = {
-  actions: TEosioAction<T>;
+  actions: TEosioAction<T>[];
 };
