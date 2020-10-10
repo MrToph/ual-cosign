@@ -24,6 +24,7 @@ type TWrappedUAL = {
     transaction: TEosioTransaction,
     options: SignTransactionConfig
   ): Promise<SignTransactionResponse>;
+  supportsCosign(): boolean;
 };
 type TSupportedAuthenticators =
   | `Scatter`
